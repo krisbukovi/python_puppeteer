@@ -6,6 +6,19 @@
 import time 
 import asyncio
 from pyppeteer import launch
+from functools import partial
+
+async def getHTML(pg, webpage):
+	await pg.goto(webpage)
+
+	content = await page.evaluate('''() => {
+
+		return {
+			html:document.documentElement.outerHTML
+		}
+	}''')
+
+	return content
 
 async def main():
 
@@ -13,25 +26,12 @@ async def main():
 	size = len(urls)
 	start_time = time.time()
 
+	browser = await launch()
+	page = await browser.newPage()
 	
-	for u in urls:
+	content = map(partial(getHTML, page), urls) 
 
-		browser = await launch()
-		page = await browser.newPage()
-		await page.goto(u)
-	
-
-		content = await page.evaluate('''() => {
-
-			return {
-
-				html: document.documentElement.outerHTML
-
-			}	
-
-		}''')
-
-		#print(content)
+	#print(content)
 
 	await browser.close()
 
