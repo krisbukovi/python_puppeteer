@@ -3,7 +3,6 @@
 # purpose: to start a chrome browser up using puppeteer that cycles through all 13 million abstract pages and captures the html and stores it in a postgres db. 
 
 
-%%cython
 import time 
 import asyncio
 from pyppeteer import launch
